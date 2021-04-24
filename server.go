@@ -1,19 +1,52 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/labstack/echo/v4"
+	"encoding/csv"
+	"fmt"
+	"io"
+	"log"
+	"os"
 )
 
-func main() {
-	e := echo.New()
+func read_csv() []map[string]string{}{
 
-	e.GET("/", hello)
+	fp, err := os.Open("crazy.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	r := csv.NewReader(fp)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	i := 0
+	crazy_list := []map[string]string{}
+	for {
+		record, err := r.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if i != 0 {
+
+			item :=
+				map[string]string{
+					"date":   record[0],
+					"action": record[1],
+				}
+
+			crazy_list = append(crazy_list, item)
+		}
+		i++
+	}
+
+	return crazy_list
 }
 
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello!")
+func main() {
+
+	
+
+
+
 }
