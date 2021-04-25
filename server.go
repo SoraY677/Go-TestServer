@@ -62,7 +62,6 @@ func main() {
 		if err != nil {
 			fmt.Println("JSON marshal error: ", err)
 		}
-		rand.Seed(time.Now().UnixNano())
 		return c.String(http.StatusOK, string(bytes))
 	})
 	e.Logger.Fatal(e.Start(":1323"))
