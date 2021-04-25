@@ -54,16 +54,15 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	word_list := read_csv()
-	index := rand.Intn(len(word_list))
-
-	bytes, err := json.Marshal(word_list[index])
-	if err != nil {
-		fmt.Println("JSON marshal error: ", err)
-		return
-	}
 
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
+		index := rand.Intn(len(word_list))
+		bytes, err := json.Marshal(word_list[index])
+		if err != nil {
+			fmt.Println("JSON marshal error: ", err)
+		}
+		rand.Seed(time.Now().UnixNano())
 		return c.String(http.StatusOK, string(bytes))
 	})
 	e.Logger.Fatal(e.Start(":1323"))
